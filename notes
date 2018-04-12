@@ -1,0 +1,27 @@
+notes:
+*****route
+get '/posts/:id/body', to: 'posts#body' #routes
+***** controller
+def body                                #controller
+    post = Post.find(params[:id])
+    render plain: post.description #get back plain text not view
+  end
+***partialview
+<h1><%= post.id %>: <%= post.title %></h2>
+<div><%= truncate post.description %></div>
+#truncate will cut off everything after 30 characters.
+<button class="js-more" data-id="<%= post.id %>">More...</button>
+#Prefixing the class name with js- means use with javascript
+***js in index.html.erb
+<script type="text/javascript" charset="utf-8">
+$(function () {
+  $(".js-more").on('click', function() {
+    // get the id from the data attribute
+    var id = $(this).data("id");
+    $.get("/posts/" + id + "/body", function(data) {
+      alert(data);
+    });
+  });
+});
+</script>
+***
