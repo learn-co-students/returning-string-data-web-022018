@@ -6,6 +6,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    set_post
   end
 
   def new
@@ -19,11 +20,18 @@ class PostsController < ApplicationController
   end
 
   def edit
+    set_post
   end
 
   def update
+    set_post
     @post.update(post_params)
     redirect_to post_path(@post)
+  end
+
+  def body
+    post = Post.find(params[:id])
+    render plain: post.description
   end
 
 private
@@ -34,6 +42,6 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def post_params
-    params.require(:post).permit(:title, :description)
+    params.require(:post).permit(:title, :description, :author_id)
   end
 end
